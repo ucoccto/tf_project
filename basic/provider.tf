@@ -8,7 +8,9 @@ terraform {
   }
 }
 provider "aws" {
-  region = "ap-northeast-2"
+  # region = "ap-northeast-2"
+  # 변수 대체
+  region = var.region
 }
 # 공급자 설명, 버전
 # AWS Provider 버전 설명, 서울 리전 지정
