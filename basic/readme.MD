@@ -34,6 +34,15 @@ terraform validate
 Success! The configuration is valid.
 ```
 
+- step3 : 실행 계획 확인 (플래닝, 시물레이션) (plan)
+```
+terraform plan
+--- (현재 내용 없음)
+No changes. Your infrastructure matches the configuration.
+
+Terraform has compared your real infrastructure against your configuration and found no differences, so no
+changes are needed.
+```
 
 
 ## EC2 구성
