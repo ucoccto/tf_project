@@ -79,14 +79,17 @@ Destroy complete! Resources: 0 destroyed.
 Internet
      │
      │
-Elastic IP
+Elastic IP       <- 리소스 생성
      │
 ┌──────────────┐
 │     EC2      │
-│ AmazonLinux2 │
+│ AmazonLinux2 │ <- 아마존 리눅스 사용/ec2-user
 └──────────────┘
      │
-Security Group
+Security Group   <- 보안그룹 전용 생성/0.0.0.0/0 개방/인바운드(ssh-22),아웃바운드(전체)
      │
-VPC(Default)
+VPC(Default)     <- 기본 사용
+
+----
+pem 파일, 스토리지, 리전, 이름, ...
 ```
