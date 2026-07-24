@@ -27,6 +27,12 @@ terraform init
 -> .terraform.lock.hcl : 프로바이더의 모듈의 정확한 버전, 해시값 잠금 -> 안정성, 자동생성시 체킹 파일
 ```
 
+- step2 : 문법 검사(체킹) (validate)
+```
+terraform validate
+---
+Success! The configuration is valid.
+```
 
 
 
