@@ -74,3 +74,19 @@ Destroy complete! Resources: 0 destroyed.
 
 
 ## EC2 구성
+### 최종 형태
+```
+Internet
+     │
+     │
+Elastic IP
+     │
+┌──────────────┐
+│     EC2      │
+│ AmazonLinux2 │
+└──────────────┘
+     │
+Security Group
+     │
+VPC(Default)
+```
