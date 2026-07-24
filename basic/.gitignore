@@ -16,4 +16,4 @@ terraform.rc
 
 terraform.tfvars
 
-.terraform.lock.hcl
+#.terraform.lock.hcl
