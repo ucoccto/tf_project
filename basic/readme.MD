@@ -56,6 +56,20 @@ Terraform has compared your real infrastructure against your configuration and f
 changes are needed.
 
 Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
+---
+실제 : ec2 경우 1~2분 , 쿠버네티스등  10분 이내 등등 시간 소요
+```
+
+- step 5 : 인프라 삭제 (destroy)
+```
+terraform destroy
+--- (삭제된것 없음. 만든것이 없어서)
+No changes. No objects need to be destroyed.
+
+Either you have not created any objects yet or the existing objects were already deleted outside of
+Terraform.
+
+Destroy complete! Resources: 0 destroyed.
 ```
 
 
