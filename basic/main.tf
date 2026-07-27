@@ -34,8 +34,12 @@ resource "aws_security_group" "DE-AI-25-IaC-TF-GROUP" {
         # 222.108.125.33/32 => 오직 이 IP만 접속 가는함!! ~/32(4자리 모두 고정)
         cidr_blocks = ["222.108.125.33/32"]
     }
-    ingress {
-
+    ingress { # HTTP 구성 실습
+        protocol = "tcp"
+        from_port = 80
+        to_port = 80
+        description = "HTTP"
+        cidr_blocks = ["0.0.0.0/0"] # 전세계로 개방
     }
     # 아웃바운드 (내부 트레픽이 외부로 나감)
     egress {
