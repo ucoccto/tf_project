@@ -180,3 +180,10 @@ pem 파일, 스토리지, 리전, 이름, ...
      - AMI(Amazon Machine Image) OS 이미지 조회
           - 사전에 어떤 제품을 사용하겠다 선정함(아마존 리눅스)
           - 목표 : ami-xxxx로 표기되는 이미지값 획득
+          ```
+          terrafomr apply
+          ---
+               ...
+               aws_ami_amazon_linux_id = "ami-0f93dc65265863858" <- 아이디 조회됨
+               ...
+          ```

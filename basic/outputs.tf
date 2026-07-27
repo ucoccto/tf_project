@@ -13,3 +13,9 @@ output "default_subnets_ids" {
 
 # 현재 위치 확인 ( ~/basic/ )
 # 출결결과 확인 (init -> plan -> `apply` -> destroy)
+
+# 앞파벳 순으로 출력된다 (작성 기준 X)
+output "aws_ami_amazon_linux_id" {
+  value       = data.aws_ami.amazon_linux.id
+  description = "아마존 리눅스 AMI 아이디 조회"
+}
