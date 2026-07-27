@@ -95,3 +95,15 @@ for_each_value = {
   "web" = "t3.micro"
 }
 ```
+
+# count
+- 리소스는 기본 1개 생성 컨셉
+- 속성으로 count를 부여하여 수치를 세팅 => 수치만큼 생성됨
+```
+resource "..." "was"{
+    ...
+    count = 3  # was용 리소스를 같은 스펙에서 3개 생성함
+    ...
+}
+```
+- 실습 basic의 *.tf코드 복사하여 tf-step2로 붙여넣기 
