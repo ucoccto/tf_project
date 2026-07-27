@@ -55,5 +55,19 @@ stations = "테라폼"
 
 - 외부 입력하여 수정2
     - 변수 2개 추가
-    - dev.tfvars, prod.tfvars 2개 준비
+        ```
+            terraform apply
+            ---
+            environment = "dev"
+            instance_count = 1
+        ```
+    - terraform.tfvars, dev.tfvars, prod.tfvars 2개 준비
+        - terraform.tfvars(or *.auto.tfvars) 생성/내용 작성해 둔다
+            - terraform apply 수행시 자동으로 읽어서 변수값 변경함(외부에서 설정)
+        - dev.tfvars(개발용), prod.tfvars(서비스용, 프로덕션) -> 용도별로 인프라 구성 가능
+            ```
+                # 개발 환경으로 인프라 구성(배포)하시오
+                terraform apply -var-file="dev.tfvars" 
+            ```
+        
     - 적용

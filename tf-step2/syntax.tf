@@ -14,13 +14,13 @@ variable "is_mz" {
 }
 variable "books" {
   # 리스트 타입
-  default = ["1","2"]
+  default = ["1", "2"]
 }
 variable "stations" {
   # map 타입
   default = {
-    A="영등포역",
-    B=100
+    A = "영등포역",
+    B = 100
   }
 }
 # 출력
@@ -43,13 +43,13 @@ output "stations" {
 # tfvars 테스트
 ################################################
 variable "environment" {
-  type = string # 명시적 타입 지정
-  default = "dev"
+  type        = string # 명시적 타입 지정
+  default     = "dev"
   description = "배포 환경 (dev -> stage -> prod)"
 }
 variable "instance_count" {
-  type = number
-  default = 1
+  type        = number
+  default     = 1
   description = "생성할 서버 개수"
 }
 output "environment" {
