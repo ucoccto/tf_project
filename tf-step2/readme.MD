@@ -107,3 +107,10 @@ resource "..." "was"{
 }
 ```
 - 실습 basic의 *.tf코드 복사하여 tf-step2로 붙여넣기 
+```
+    # 코드 수정후
+    terraform init
+    terraform apply
+    # 확인
+    terraform destroy
+```

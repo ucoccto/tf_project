@@ -61,9 +61,9 @@ output "instance_count" {
 
 # locals
 locals {
-    project = "테라폼"
-    env = "pod"
-    name = "${local.project}-${local.env}-${var.environment}"
+  project = "테라폼"
+  env     = "pod"
+  name    = "${local.project}-${local.env}-${var.environment}"
 }
 output "local_value" {
   value = local.name
@@ -91,7 +91,7 @@ output "for_each_value" {
 # resource "temp_spec" "server" {
 #   # 반복적으로 구성될 데이터 세팅 -> 내부적으로 반복
 #   for_each = local.servers
-  
+
 #   # 내부에서 자동처리 예시
 #   input = {
 #     name = each.key
