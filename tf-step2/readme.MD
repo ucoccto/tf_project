@@ -22,3 +22,33 @@
 ```
 string, number, bool, list, map, object
 ```
+- 예제 출력 결과 -> 알파벳순
+```
+age = 100
+books = [
+  "1",
+  "2",
+]
+is_mz = true
+name = "테라폼"
+stations = "테라폼"
+```
+- 변수의 의미 (`variable` -> Input Variable vs `locals` (Local Values) )
+    - 목적: 재사용되는 값 변수로 정의하여 일괄관리, 외부에서 받아오는 입력값 대응
+    - 재사용성(여러 리소스등에서 사용), 동적 설정(외부, `-var 옵션` or  `.tfvars` )
+
+- 외부 입력하여 수정
+```
+# 생성(수행) 단계에서 매개변수로 전달하여(외부) 변수값 수정
+terraform apply -var="age=99" -var="is_mz=false"
+---
+# 코드 변경없이 매개변수로 다른 구성을 생성할수 있음
+age = "99"  <- 수정
+books = [
+  "1",
+  "2",
+]
+is_mz = "false" <- 수정
+name = "테라폼"
+stations = "테라폼"
+```
