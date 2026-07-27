@@ -16,7 +16,7 @@ data "aws_subnets" "default" {
 # 3. 보안그룹 생성 선언 - EC2 진입 하는데 인바운드 IP/포트, 아웃바운드 IP/포트 설정 => 접근 제한!!
 resource "aws_security_group" "DE-AI-25-IaC-TF-GROUP" {
   # 메타 정보
-  name        = "terraform-25-sg2"
+  name = "terraform-25-sg2"
   # ASCII만 지원
   description = "de-ai-25 security group"
   # 보안 그룹은 VPC에 종속되어서 구성됨
@@ -56,42 +56,42 @@ resource "aws_security_group" "DE-AI-25-IaC-TF-GROUP" {
 
 # 아마존 리눅스 AMI의 ID 조회
 data "aws_ami" "amazon_linux" {
-    # 최신 설정
-    most_recent = true
-    # 소유자
-    owners = [ "amazon" ]
-    # 필터링
-    filter {
-      name = "name"
-      values = [ "al2023-ami-*" ]
-    }  
-    # 프리티어를 사용할려면 필터를 추가해야함 -> ec2에서 인스턴스 유형이 t2/t3.micro등 선택되어야 확정됨
-    # 필터 추가
-    filter {
-      name = "architecture"
-      values = [ "x86_64" ]
-    }
+  # 최신 설정
+  most_recent = true
+  # 소유자
+  owners = ["amazon"]
+  # 필터링
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*"]
+  }
+  # 프리티어를 사용할려면 필터를 추가해야함 -> ec2에서 인스턴스 유형이 t2/t3.micro등 선택되어야 확정됨
+  # 필터 추가
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
 }
 
 # 4. EC2 생성 선언
 resource "aws_instance" "DE-AI-25-IaC-TF" {
-    # AMI -> OS
-    ami = data.aws_ami.amazon_linux.id
-    # 인스턴스 유형
-    instance_type = var.instance_type
-    # 키 페어
-    key_name = var.key_name
-    # 서브넷
-    subnet_id = data.aws_subnets.default.ids[0] # a,b,c,d중 첫번재 선택(a)
-    # 보안그룹
-    vpc_security_group_ids = [
-        aws_security_group.DE-AI-25-IaC-TF-GROUP.id
-    ]
-    # 스토리지 생략
-    # 고급 설정 생략
-    # 태그
-    tags = {
-      Name = "DE-AI-25-IaC-TF-EC2"
-    }
-    # IP는 임시로 자동할당 (현재 EIP 사용 x)
+  # AMI -> OS
+  ami = data.aws_ami.amazon_linux.id
+  # 인스턴스 유형
+  instance_type = var.instance_type
+  # 키 페어
+  key_name = var.key_name
+  # 서브넷
+  subnet_id = data.aws_subnets.default.ids[0] # a,b,c,d중 첫번재 선택(a)
+  # 보안그룹
+  vpc_security_group_ids = [
+    aws_security_group.DE-AI-25-IaC-TF-GROUP.id
+  ]
+  # 스토리지 생략
+  # 고급 설정 생략
+  # 태그
+  tags = {
+    Name = "DE-AI-25-IaC-TF-EC2"
+  }
+  # IP는 임시로 자동할당 (현재 EIP 사용 x)
 }
