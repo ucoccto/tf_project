@@ -19,3 +19,7 @@ output "aws_ami_amazon_linux_id" {
   value       = data.aws_ami.amazon_linux.id
   description = "아마존 리눅스 AMI 아이디 조회"
 }
+output "aws_ami_amazon_linux_info" {
+  value       = data.aws_ami.amazon_linux
+  description = "아마존 리눅스 AMI 조회"
+}

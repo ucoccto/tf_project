@@ -65,5 +65,10 @@ data "aws_ami" "amazon_linux" {
       name = "name"
       values = [ "al2023-ami-*" ]
     }  
-    # 프리티어를 사용할려면 필터를 추가해야함
+    # 프리티어를 사용할려면 필터를 추가해야함 -> ec2에서 인스턴스 유형이 t2/t3.micro등 선택되어야 확정됨
+    # 필터 추가
+    filter {
+      name = "architecture"
+      values = [ "x86_64" ]
+    }
 }
