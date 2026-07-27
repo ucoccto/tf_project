@@ -149,10 +149,34 @@ pem 파일, 스토리지, 리전, 이름, ...
                ---
                Success! The configuration is valid.
 
-               # 적용
+               # 플랜 => 이렇게 만들것이다
+               terraform plan
+               ---
+               ..
+               symbols:
+                    + create  <= + 생성
+               ...
+                    하위 모든 리소스 에서 + 형태로 확인됨
+               ... 
+               요약
+               Plan: 1 to add, 0 to change, 0 to destroy
 
-               # aws 보안 그룹 확인
+               # 적용
+               terraform apply
+
+               # aws 보안 그룹 확인 -> aws 대시보드
 
                # 삭제
-
+               terraform destroy
+               ---
+                    - destroy : 삭제(제거) 처리 
+               ...
+                    하위 모든 리소스 에서 - 형태로 확인됨
+               ... 
+               요약
+               Plan: 0 to add, 0 to change, 1 to destroy.
                ```
+     
+     - AMI(Amazon Machine Image) OS 이미지 조회
+          - 사전에 어떤 제품을 사용하겠다 선정함(아마존 리눅스)
+          - 목표 : ami-xxxx로 표기되는 이미지값 획득
