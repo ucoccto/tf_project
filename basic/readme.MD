@@ -121,6 +121,9 @@ pem 파일, 스토리지, 리전, 이름, ...
           - 클라우드 내부에 나만 사용하는 사설네트워크(VPC관련 전체 리소스) 만 제외하고 전체 구성을 동적으로 생성
      - data, resouce등 작성
           - 리소스 유형(https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+               - AWS VPC => aws_vpc
+               - AWS IAM Role => aws_iam_role
+               - `<프로바이더명>_<서비스명> or <프로바이더명>_<서비스명>_<상세리소스>`
           - TF내부 고유명 : 커스텀가능
           ```
                data|resource "리소스유형(AWS 고정값)" "테라폼 내부 식별자(TF내부 고유명)" {
