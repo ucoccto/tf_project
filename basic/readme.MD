@@ -228,3 +228,9 @@ pem 파일, 스토리지, 리전, 이름, ...
                ...
                Destroy complete! Resources: 2 destroyed. <- 2개 리소스 삭제
           ```
+
+     - EIP 생성
+          ```
+          - apply
+               
+          ```
