@@ -221,3 +221,10 @@ pem 파일, 스토리지, 리전, 이름, ...
                ... <- 현재 퍼블릭 IP 없음 (출력 처리 x)
 
           ```
+          - destroy
+          ```
+               ...
+               aws_instance.DE-AI-25-IaC-TF: Destruction complete after 1m0s <- 1분 소요
+               ...
+               Destroy complete! Resources: 2 destroyed. <- 2개 리소스 삭제
+          ```
