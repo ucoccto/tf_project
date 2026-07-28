@@ -94,6 +94,15 @@ resource "aws_instance" "DE-AI-25-IaC-TF" {
     Name = "DE-AI-25-IaC-TF-EC2"
   }
   # IP는 임시로 자동할당 (현재 EIP 사용 x)
+  # AMI에서 아마존리눅스 최신버전 획득 => 웹 연결 브라우저 접속 기능 설치 x 있음
+  # 인스턴스 만들때 직접 설치 (user_data)
+  # #!/bin/bash : bash 쉘을 이용하여 아래 명령을 실행하라 (안내표시 shebang)
+  # 아마존 리눅스 (레드헷 계열 커스텀) -> dnf : 패키지 관리자 (소프트웨어 설치,삭제..)
+  # <<-EOF .. EOF : 여러줄 문자열을 한번에 스크립트나 파일로 넘겨주는 형식(Here-Document)
+  user_data = <<-EOF
+    #!/bin/bash
+    dnf install -y ec2-instance-connect
+  EOF
 }
 
 # 5. Elastic IP 생성 선언 -> EC2 연결 (차후 IP를 미리 확보하고 ec2 생성되면 연결하는 방식 진화)
