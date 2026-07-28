@@ -87,4 +87,13 @@
                 - 최종 : 사용 개수 256-5 = `251개 가용 가능한`
 
         ```
-    - 
+    - 종류
+        - 퍼블릭 서브넷
+            ```
+                Internet <-> IGW <-> Route Table <-> Public Subnet <-> EC2                    
+            ```
+        - 프라이빗 서브넷
+            ```
+                Internet                       X  Route Table <-> Public Subnet <-> EC2
+                Internet  <-(pull) NAT Gateway <-> Route Table <-> Public Subnet <-> EC2
+            ```
