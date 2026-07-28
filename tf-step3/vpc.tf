@@ -6,6 +6,6 @@ resource "aws_vpc" "DE-AI-25-company" {
   enable_dns_hostnames = true
   enable_dns_support = true
   tags = {
-    Name = "company-vpc"
+    Name = "DE-AI-25-company-vpc"
   }
 }
