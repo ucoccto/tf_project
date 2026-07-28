@@ -180,3 +180,24 @@ AWS
  │
  └── VPC-C (테스트)
 ```
+
+## 일반적 구성(용도제외, 요소별 구성)
+```
+                  Internet
+                      │
+              Internet Gateway
+                      │
+               ┌──────────────┐
+               │     VPC      │
+               │10.0.0.0/16   │
+               └──────────────┘
+                 │          │
+        ┌────────┘          └────────┐
+        │                            │
+ Public Subnet                 Private Subnet
+10.0.1.0/24                   10.0.2.0/24
+        │                            │
+      EC2(Web)                   EC2(DB, WAS)
+        │                            │
+    Public IP                    Private IP
+```
