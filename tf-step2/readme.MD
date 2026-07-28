@@ -188,3 +188,36 @@ resource "aws_subnet" "public" {
 }
 ```
 
+# lifecycle (생명주기)
+- 리소스의 생명주기를 어떻게 관리 할 것인지 메타 인자
+- 동작 : 생성, 수정, 교체, 삭제 기반으로 파생되어 구성
+- 주요 유형
+    - 삭제 하지 않겟다 => prevent_destroy
+        - EIP -> 고정 IP
+        - RDS (데이터베이스) -> 데이터
+        - S3 Bucket (객체 저장소-> 저장 단위(버킷/바구니) -> 유지) -> 데이터
+        - Route53 -> 도메인
+        - 프로젝트간 영속 저장/유지 대상
+        ```
+            resource "aws_eip" "DE-AI-25-IaC-TF-EIP" {          
+                instance = aws_instance.DE-AI-25-IaC-TF.id          
+                domain = "vpc"
+                # 삭제 하지 않는다!! => terraform destroy 수행시 에러 발생하고 넘어감
+                lifecycle {
+                        prevent_destroy = true
+                }
+            }
+        ```
+    - 삭제하기 전에 먼저 생성하고 나서 삭제한다 (교체하는 컨셉, 서비스 중단(Downtime)에 대한 대처)
+        - create_before_destroy
+        - 테라폼은 삭제 => 생성 흐름을 기본으로 가지고 있음
+            - 서비스 중단이 잠시 발생됨 
+            - 대처 : 새 리소스 생성 => 이후 기존 리소스 삭제
+        ```
+            ...
+                lifecycle {
+                    create_before_destroy = true
+                }
+            ...
+        ```
+
