@@ -24,3 +24,12 @@ resource "aws_subnet" "public" {
     Name = "DE-AI-25-public-subnet"
   }
 }
+# 현재까지는 퍼블릭 IP 활성화 차단된 상태임
+
+# 인터넷 게이트웨이
+resource "aws_internet_gateway" "company" {
+    vpc_id =  aws_vpc.DE-AI-25-company.id
+    tags = {
+      Name = "DE-AI-25-company-igw"
+    }
+}

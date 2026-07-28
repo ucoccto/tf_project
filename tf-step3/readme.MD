@@ -236,5 +236,18 @@ AWS
 
 ## 서브넷 구성 (public)
 - 작성
-- terraform apply
-- terraform state list
+```
+terraform apply
+---
+..
+---
+terraform state list
+---
+aws_subnet.public
+aws_vpc.DE-AI-25-company
+```
+
+## Internet Gateway 
+- 작성
+- 생성
+- 확인
