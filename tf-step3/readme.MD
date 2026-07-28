@@ -294,3 +294,43 @@ aws_vpc.DE-AI-25-company
 ```
 - 5. Elastic IP 생성 선언 주석 풀어줌
 - outputs.tf에서 EIP의 퍼블릭 IP 출력로 표기
+- terraform apply
+- terraform graph 
+    - 관계도 확인
+    ```
+        digraph G {
+            rankdir = "RL";
+            node [shape = rect, fontname = "sans-serif"];
+            "data.aws_ami.amazon_linux" [label="data.aws_ami.amazon_linux"];
+            "aws_eip.DE-AI-25-IaC-TF-EIP" [label="aws_eip.DE-AI-25-IaC-TF-EIP"];
+            "aws_instance.DE-AI-25-IaC-TF" [label="aws_instance.DE-AI-25-IaC-TF"];
+            ...
+    ```
+
+
+# 내일 목표시스템
+- private 서브넷 구성
+- 3-tier 구성
+- NAT Gateway 배치
+```
+                    Internet
+                        │
+                Internet Gateway
+                        │
+                Public Route Table
+                        │
+      ┌─────────────────┴─────────────────┐
+      │                                   │
+ Public Subnet (10.0.1.0/24)        Private Subnet (10.0.2.0/24)
+      │                                   │
+      │                                   │
+ ┌────────────┐                    ┌────────────┐
+ │ Web EC2    │                    │ DB EC2     │
+ │ nginx      │                    │ mysql      │
+ └────────────┘                    └────────────┘
+                                          │
+                                    ┌────────────┐
+                                    │ WAS EC2    │
+                                    │ FastAPI    │
+                                    └────────────┘
+```
