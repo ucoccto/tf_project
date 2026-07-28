@@ -251,3 +251,9 @@ aws_vpc.DE-AI-25-company
 - 작성
 - 생성
 - 확인
+
+## Route Table
+- Route Table 생성
+
+## Route Table 연결
+- subnet과 igw를 연결
