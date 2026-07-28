@@ -165,3 +165,26 @@ resource "aws_security_group" "DE-AI-25-IaC-TF-GROUP" {
     }
 }
 ```
+
+# depends_on
+- 현재 리소스 생성전에 지정한 리소스가 먼저 생성되어야 한다 라는것을 명시적으로 알려주는 표기
+- <-> 암묵적 선언 (테라폼 검토 -> 자연스럽게 구성)
+```
+# 명시적
+resource "aws_security_group" "web" {
+    ..
+}
+resource "aws_instance" "web" {
+    # 명시적 선언 => 보안그룹을 먼저 생성한후 => 인스턴스 구성하라
+    depends_on = [ aws_security_group.web ]
+}
+# 암묵적
+resource "aws_vpc" "web" {
+    ...
+}
+resource "aws_subnet" "public" {
+    # 암묵적 > vpc가 먼저 구성되어야만 서브넷 구성에 매개변수를 세팅할수 있음 -> vpc 선행된다 해석
+    vpc_id = aws_vpc.web.id
+}
+```
+
