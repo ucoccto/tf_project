@@ -16,7 +16,7 @@ data "aws_vpc" "default" {
 resource "aws_security_group" "web" {
   # 이름 충돌 방지 처리
   # name_prefix ~ lifecycle 혼합으로 사용
-  name_prefix = "web-sg-25-"
+  name_prefix = "web-sg-25-" # web-sg-25-해시값
   vpc_id = data.aws_vpc.default.id
   lifecycle {
     create_before_destroy = true
