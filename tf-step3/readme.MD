@@ -264,7 +264,8 @@ aws_vpc.DE-AI-25-company
     - 테라폼으로 Custom VPC 사용하는 EC2 구성
     - public subnet에 EC2 배치
     - Security group 회사 VPC 맞게 수정(22, 80)
-    - EIP x
+    - EIP
+    - 구성 완료 => SSH 접속 확인
 
 ### 구성도
 ```
@@ -279,6 +280,17 @@ aws_vpc.DE-AI-25-company
       │  Public Subnet          │
       │   10.0.1.0/24           │
       │        │                │
-      │     EC2 + EIP(x)        │
+      │     EC2 + EIP           │
       └─────────────────────────┘
 ```
+### 작업
+- VPC 교체 -> subnet 교체 -> 사용하느곳 모두 교체
+- basic 코드 붙여넣기 -> main.tf, variable.tf, provider.tf, outputs.tf
+- main.tf 에서 vpc, subnet 코드 삭제
+- terraform plan > error > 수정위치가 나옴
+```
+     9:   vpc_id = data.aws_vpc.default.id => aws_vpc.DE-AI-25-company.id
+     72:  subnet_id = data.aws_subnets.default.ids[0] => aws_subnet.public.id
+```
+- 5. Elastic IP 생성 선언 주석 풀어줌
+- outputs.tf에서 EIP의 퍼블릭 IP 출력로 표기
