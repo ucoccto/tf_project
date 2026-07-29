@@ -65,3 +65,12 @@ L VPC
               ..  443  ..
             }
         ```
+- 작성
+    - terraform fmt
+    - terraform validate
+    - terraform plan
+        - 의도한 대로 네이밍, 리소스 구성등 잘 계획되었는지 확인
+
+- web -> was, was는 오직 web에서만 tcp 8000 포트로만 오픈된다. rule 구성
+
+- was -> db,  db는 오직 was에서만 tcp 3306 포트로만 오픈된다. rule 구성
