@@ -1,4 +1,20 @@
-# 반복된 내용 locals 구성
+# 반복된 내용 locals 구성 (반복등장/값이 상이 한것 : 서브넷, 보안그룹)
+locals {
+  severs = {
+    web = {
+        subnet = aws_subnet.public.id
+        sg     = aws_security_group.sg["web"].id
+    }
+    was = {
+        subnet = aws_subnet.private.id
+        sg     = aws_security_group.sg["was"].id
+    }
+    db  = {
+        subnet = aws_subnet.private.id
+        sg     = aws_security_group.sg["db"].id
+    }
+  }
+}
 
 # ami 조회
 data "aws_ami" "amazon_linux" {
