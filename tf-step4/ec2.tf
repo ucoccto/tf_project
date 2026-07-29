@@ -46,13 +46,12 @@ resource "aws_instance" "server" {
         #!/bin/bash
         dnf install -y ec2-instance-connect
     EOF
-  
 }
 
 # 오직 web용 ec2만 EIP 생성 선언 
 resource "aws_eip" "DE-AI-25-IaC-TF-EIP" {
   # EC2 인스턴스 -> web 용 ec2
-  instance = aws_instance.   .id
+  instance = aws_instance.server.id
   # 네트워크
   domain = "vpc"
 }
