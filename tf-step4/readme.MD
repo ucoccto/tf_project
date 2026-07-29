@@ -85,3 +85,26 @@ L VPC
 
 # EC2 구성 - 각각 적절한 서브넷으로 배치 생성
 - ec2.tf
+    - 작성
+    - terraform apply
+    - AWS Console > EC2 > 본인 EC2-..WEB > 연결 > 웹브라우저에서 EC2 인스턴스 연결
+    - 로컬 PC > 터미널 > PEM 파일이 위치한 곳 이동
+        ```
+            > scp -i DE-AI-25-TEST.pem DE-AI-25-TEST.pem ec2-user@<WEB EC2의 EIP(퍼블릭IP)>:~/
+            ....
+            The authenticity of host '3.39.1.112 (3.39.1.112)' can't be established.
+            ED25519 key fingerprint is SHA256:fnLi5JuisdbwAzr118WkJCNxyyPHs1BHzKrzVHW09B4.
+            This key is not known by any other names.
+            Are you sure you want to continue connecting (yes/no/[fingerprint])?  <= yes 입력(보이진 않음)
+            Warning: Permanently added '3.39.1.112' (ED25519) to the list of known hosts.
+            Bad permissions. Try removing permissions for user: DESKTOP-G5DKS3P\\CodexSandboxUsers (S-1-5-21-2809491851-1445588076-1565415056-1003) on file C:/Users/Dell3571/Desktop/DE-AI-25-TEST.pem.
+            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            @         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            Permissions for 'DE-AI-25-TEST.pem' are too open.
+            It is required that your private key files are NOT accessible by others.
+            This private key will be ignored.
+            Load key "DE-AI-25-TEST.pem": bad permissions
+            ec2-user@3.39.1.112: Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+            C:\WINDOWS\System32\OpenSSH\scp.exe: Connection closed
+        ```
