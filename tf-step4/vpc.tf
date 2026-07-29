@@ -62,3 +62,11 @@ resource "aws_subnet" "private" {
     Name = "DE-AI-25-private-subnet"
   }
 }
+
+# 라우트 테이블
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.DE-AI-25-company.id  
+  tags = {
+    Name = "DE-AI-25-company-private-rt"
+  }
+}
