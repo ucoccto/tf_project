@@ -55,9 +55,9 @@ resource "aws_route_table_association" "public" {
 
 # private 서브넷 구성
 resource "aws_subnet" "private" {
-  vpc_id = aws_vpc.DE-AI-25-company.id
-  cidr_block = "10.0.2.0/24"
-  availability_zone = "ap-northeast-2a"  
+  vpc_id            = aws_vpc.DE-AI-25-company.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "ap-northeast-2a"
   tags = {
     Name = "DE-AI-25-private-subnet"
   }
@@ -65,7 +65,7 @@ resource "aws_subnet" "private" {
 
 # 라우트 테이블
 resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.DE-AI-25-company.id  
+  vpc_id = aws_vpc.DE-AI-25-company.id
   tags = {
     Name = "DE-AI-25-company-private-rt"
   }
