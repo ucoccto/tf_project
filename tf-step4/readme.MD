@@ -48,3 +48,20 @@ L VPC
     - Private Route Table
     - association
     - EC2 조정
+
+# 보안 그룹 구성
+- sg.tf 생성
+- ingress 파트가 반복됨
+    - EC2 (Web) 
+        ```
+            # ingress 3회반복 -> locals에서 값 정의(상수), for_each(반복데이터주입), dynamic을 통해 블록반복표현
+            ingress {
+              ..  22  ..
+            }
+            ingress {
+              ..  80  ..
+            }
+            ingress {
+              ..  443  ..
+            }
+        ```
