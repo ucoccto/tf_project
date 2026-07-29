@@ -36,3 +36,15 @@ L VPC
             L Private Subnet
                 L EC2 (Was) - SG (22, 8000)
                 L EC2 (Db)  - SG (22, 3306)
+
+# 예상되는 작업
+- 퍼블릭 서브넷 활용
+    - 반복 표현으로 구성
+        - SG는 반복 구성 (locals, for_each, dynamic 활용)
+        - EC2는 반복 구성 (locals, for_each, dynamic 활용)
+
+- 프라이빗 서브넷 구성
+    - Private Subnet
+    - Private Route Table
+    - association
+    - EC2 조정
