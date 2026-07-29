@@ -113,3 +113,13 @@ L VPC
                     _/ _/
                 _/m/'
         ```
+    - web ec2의 ssh 통해서 was/db ec2에 접근 가능
+
+# NAT Gateway 구성
+- private subnet에 존재하는 EC2 리소스 내에서 특정 패키지를 어떻게 설치, 업그레이드 가능할까? => NAT Gateway
+- 작업
+    - NAT Gateway 은 public subnet 소속, 기능은 제한적 통신(단방향적, pull만 가능)
+        - EIP 생성 선언
+        - NAT Gateway 생성 선언 (EIP 연결)
+    - private route table에 라우트 설정 NAT Gateway
+        - private route table에 route 기능 설정하여 NAT Gateway와 연결
