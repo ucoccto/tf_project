@@ -49,9 +49,9 @@ resource "aws_instance" "server" {
 }
 
 # 오직 web용 ec2만 EIP 생성 선언 
-resource "aws_eip" "DE-AI-25-IaC-TF-EIP" {
-  # EC2 인스턴스 -> web 용 ec2
-  instance = aws_instance.server["web"].id
-  # 네트워크
-  domain = "vpc"
-}
+# resource "aws_eip" "DE-AI-25-IaC-TF-EIP" {
+#   # EC2 인스턴스 -> web 용 ec2
+#   instance = aws_instance.server["web"].id
+#   # 네트워크
+#   domain = "vpc"
+# }
