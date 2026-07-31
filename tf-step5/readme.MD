@@ -48,3 +48,25 @@ Prometheus -> Grafana -> Metrics -> Alert (슬랙등..)
     - 운영형 아킥텍쳐        
     - 쿠버네티스로 자연스럽게 확장 연동 대체 가능한 구조
         - 각 파트별 대체 가능
+
+# 구성도
+- 트래픽 이동(api 요청, 웹페이지 요청, request)
+```
+Internet
+   │
+Public ALB
+   │
+WEB Auto Scaling Group
+├─ WEB EC2 / AZ-a
+└─ WEB EC2 / AZ-c
+   │
+Internal ALB
+   │
+WAS Auto Scaling Group
+├─ WAS EC2 / AZ-a
+└─ WAS EC2 / AZ-c
+   │
+RDS MySQL Multi-AZ
+├─ Primary
+└─ Standby
+```
