@@ -28,10 +28,10 @@ resource "aws_security_group" "web" {
   description = "Allow HTTP only from public ALB"
   vpc_id      = aws_vpc.main.id
   ingress {
-    description     = "HTTP from public ALB"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    description = "HTTP from public ALB"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     # cidr x, 보안그룹 -> public ALB 보안그룹 지정
     security_groups = [aws_security_group.public_alb.id]
   }
@@ -51,10 +51,10 @@ resource "aws_security_group" "internal_alb" {
   description = "Allow WAS traffic only from WEB tier"
   vpc_id      = aws_vpc.main.id
   ingress {
-    description     = "WAS request from WEB"
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    description = "WAS request from WEB"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     # cidr x, 보안그룹 -> web 보안그룹 지정
     security_groups = [aws_security_group.web.id]
   }
@@ -74,10 +74,10 @@ resource "aws_security_group" "was" {
   description = "Allow application traffic only from internal ALB"
   vpc_id      = aws_vpc.main.id
   ingress {
-    description     = "Application traffic from internal ALB"
-    from_port       = 8000
-    to_port         = 8000
-    protocol        = "tcp"
+    description = "Application traffic from internal ALB"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
     # cidr x, 보안그룹 -> internal_alb 보안그룹 지정
     security_groups = [aws_security_group.internal_alb.id]
   }
@@ -97,10 +97,10 @@ resource "aws_security_group" "rds" {
   description = "Allow MySQL only from WAS tier"
   vpc_id      = aws_vpc.main.id
   ingress {
-    description     = "MySQL from WAS"
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
+    description = "MySQL from WAS"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
     # cidr x, 보안그룹 -> was 보안그룹 지정
     security_groups = [aws_security_group.was.id]
   }

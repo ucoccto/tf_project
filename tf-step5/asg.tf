@@ -7,25 +7,25 @@
 resource "aws_autoscaling_group" "web" {
   name = "${local.project}-WEB-ASG"
   # 최소 크기 - 최소 2대는 상시 유지 -> 장애 발생 하더라도 2개로 맞춘다!!
-  min_size         = 2
+  min_size = 2
   # 최초 디자인된 개수
   desired_capacity = var.web_desired_capacity
   # 최대 확장되는 개수
-  max_size         = 4
+  max_size = 4
 
   # 두(n)개 서브넷의 가용 영역별로 구성
   vpc_zone_identifier = [for subnet in aws_subnet.app : subnet.id]
   # 로드밸런서 타겟 그룹 배치
-  target_group_arns   = [aws_lb_target_group.web.arn]
+  target_group_arns = [aws_lb_target_group.web.arn]
   # 헬스 체크 ELB(ALB)로 구성
-  health_check_type         = "ELB"
+  health_check_type = "ELB"
   # 서버구성후 180초 동안 헬스 체크 실패는 무시( 최초 구성시 로드, 업데이트등 정상 x)
   health_check_grace_period = 180
 
   # ec2를 launch_template 이용하여 구성하겠다 (상세 구성 내용-런치 템플릿(기존 ec2.tf))
   launch_template {
     # 커스텀으로 구성한 런치 탬플릿 참조
-    id      = aws_launch_template.web.id
+    id = aws_launch_template.web.id
     # 런치 템플릿의 최신버전
     version = "$Latest"
   }
@@ -54,15 +54,15 @@ resource "aws_autoscaling_group" "web" {
   }
 }
 resource "aws_autoscaling_group" "was" {
-  name = "${local.project}-WAS-ASG"
-  min_size         = 2
+  name     = "${local.project}-WAS-ASG"
+  min_size = 2
   # 초기 구성 개수 타겟
-  desired_capacity = var.was_desired_capacity
-  max_size         = 4
+  desired_capacity    = var.was_desired_capacity
+  max_size            = 4
   vpc_zone_identifier = [for subnet in aws_subnet.app : subnet.id]
   # alb 타겟 그룹 다름
-  target_group_arns   = [aws_lb_target_group.was.arn]
-  health_check_type         = "ELB"
+  target_group_arns = [aws_lb_target_group.was.arn]
+  health_check_type = "ELB"
   # 240초 동안 헬스 체크 오류는 무시. was가 구성상 더 시간이 소요됨
   health_check_grace_period = 240
   launch_template {
@@ -93,7 +93,7 @@ resource "aws_autoscaling_policy" "web_cpu" {
   name                   = "${local.project}-WEB-CPU-50"
   autoscaling_group_name = aws_autoscaling_group.web.name
   # 정책 타입 : 목표 추적 방식으로 스케일링 처리
-  policy_type            = "TargetTrackingScaling"
+  policy_type = "TargetTrackingScaling"
   # 설정 목표
   # 목적 : 설정된 지표가 목표값 근처에 유지되도록 ec2 수를 조정
   target_tracking_configuration {

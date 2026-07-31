@@ -6,10 +6,10 @@ resource "aws_lb" "public" {
   internal           = false
   load_balancer_type = "application"
   # 보안그룹 - 퍼블릭 ALB
-  security_groups    = [aws_security_group.public_alb.id]
+  security_groups = [aws_security_group.public_alb.id]
   # 퍼블릭 서브넷 2개 (가용영역별 a, c) 각각 id를 추출(리스트 컴프리핸션 방식 문법) 반영
-  subnets            = [for subnet in aws_subnet.public : subnet.id]
-  tags = { Name = "${local.project}-PUBLIC-ALB" }
+  subnets = [for subnet in aws_subnet.public : subnet.id]
+  tags    = { Name = "${local.project}-PUBLIC-ALB" }
 }
 # ALB가 주기적으로 대상 EC2의 상태를 체크하는 설정(헬스체크등)
 resource "aws_lb_target_group" "web" {
@@ -47,13 +47,13 @@ resource "aws_lb_listener" "public_http" {
 # internal ALB : WEB ASG <-> Internal ALB <-> WAS ASG
 #################################
 resource "aws_lb" "internal" {
-  name               = "${local.project}-internal-alb"
+  name               = "${local.project}-In-alb"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.internal_alb.id]
   # APP 프라이빗 서브넷 2개 (가용영역별 a, c) 각각 id를 추출(리스트 컴프리핸션 방식 문법) 반영
-  subnets            = [for subnet in aws_subnet.app : subnet.id]
-  tags = { Name = "${local.project}-INTERNAL-ALB" }
+  subnets = [for subnet in aws_subnet.app : subnet.id]
+  tags    = { Name = "${local.project}-INTERNAL-ALB" }
 }
 # was 직접 점검 => 8000번 접속, 모두 상위 설정값과 동일
 resource "aws_lb_target_group" "was" {
