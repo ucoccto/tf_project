@@ -97,7 +97,22 @@ resource "aws_nat_gateway" "main" {
   ]
 }
 
-# Private App Route Table/association  - Web, Was
-
-# Private Db Route Table/association  - RDS
+# Private App Route Table/association
+resource "aws_route_table" "app" {
+  for_each = local.azs
+  vpc_id = aws_vpc.main.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.main[each.key].id
+  }
+  tags = {
+    Name = "${local.project}-APP-RT"
+  }
+}
+resource "aws_route_table_association" "private" {
+  for_each = aws_subnet.app
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.app[each.key].id
+}
+# Private Db Route Table/association
 
