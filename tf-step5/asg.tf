@@ -56,13 +56,17 @@ resource "aws_autoscaling_group" "web" {
 resource "aws_autoscaling_group" "was" {
   name = "${local.project}-WAS-ASG"
   min_size         = 2
+  # 초기 구성 개수 타겟
   desired_capacity = var.was_desired_capacity
   max_size         = 4
   vpc_zone_identifier = [for subnet in aws_subnet.app : subnet.id]
+  # alb 타겟 그룹 다름
   target_group_arns   = [aws_lb_target_group.was.arn]
   health_check_type         = "ELB"
+  # 240초 동안 헬스 체크 오류는 무시. was가 구성상 더 시간이 소요됨
   health_check_grace_period = 240
   launch_template {
+    # ec2 구성 상이
     id      = aws_launch_template.was.id
     version = "$Latest"
   }
@@ -88,11 +92,18 @@ resource "aws_autoscaling_group" "was" {
 resource "aws_autoscaling_policy" "web_cpu" {
   name                   = "${local.project}-WEB-CPU-50"
   autoscaling_group_name = aws_autoscaling_group.web.name
+  # 정책 타입 : 목표 추적 방식으로 스케일링 처리
   policy_type            = "TargetTrackingScaling"
+  # 설정 목표
+  # 목적 : 설정된 지표가 목표값 근처에 유지되도록 ec2 수를 조정
   target_tracking_configuration {
+    # 평가 기준
     predefined_metric_specification {
+      # AWS 제공하는 지표 활용 => CPU 사용량
       predefined_metric_type = "ASGAverageCPUUtilization"
     }
+    # 타겟값 50=> 평균 CPU 사용량 50% 높음(낮음) -> EC2 증가(감소) 자동 스케일링 진행
+    # 2 ~ 4 사이에 구성
     target_value = 50
   }
 }
