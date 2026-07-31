@@ -109,7 +109,7 @@ resource "aws_route_table" "app" {
     Name = "${local.project}-APP-RT"
   }
 }
-resource "aws_route_table_association" "private" {
+resource "aws_route_table_association" "app" {
   for_each = aws_subnet.app
   subnet_id      = each.value.id
   route_table_id = aws_route_table.app[each.key].id
@@ -122,7 +122,7 @@ resource "aws_route_table" "db" {
     Name = "${local.project}-DB-RT"
   }
 }
-resource "aws_route_table_association" "private" {
+resource "aws_route_table_association" "db" {
   for_each       = aws_subnet.db
   subnet_id      = each.value.id
   route_table_id = aws_route_table.db.id
