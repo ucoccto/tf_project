@@ -121,3 +121,16 @@ L userdata-was.sh.tftpl : 테라폼 템플릿 파일, was ec2 구성시 초기�
     - 3. AWS 관리형 정책 연결
     - 4. EC2에 적용하는 IAM 인스턴스 프로필 생성
     - 단, 생성되는 EC2에는 SSM Agent가 설치되어 있어야함 (최신형을 통상 설치되어 있음)
+
+# 트레블 슈팅
+## SSM Role 관련
+```
+Error: creating IAM Role (DE-AI-25-IaC-3tier-V1-EC2-SSM-Role): operation error IAM: CreateRole, https response error StatusCode: 409, RequestID: 099822ce-3507-4be7-b7d2-5be76d86b8cc, EntityAlreadyExists: Role with name DE-AI-25-IaC-3tier-V1-EC2-SSM-Role already exists. <= 이미 존재
+---
+- AWS > 우측 하단 > cloudshell 작동
+    - 분리 작업
+    aws iam remove-role-from-instance-profile --instance-profile-name [프로파일이름] --role-name [역할이름]
+    - 프로필 삭제 
+    aws iam delete-instance-profile --instance-profile-name [프로파일이름]
+    - iAM > 역활 > 해당 역활 삭제
+```
