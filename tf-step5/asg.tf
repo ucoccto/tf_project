@@ -1,3 +1,9 @@
+#############################################
+# WEB/WAS EC2를 각각 최소 2대 유지하도록 구성
+# CPU 측정(트레픽 나름 비례) -> 50% 기준 설정(사내별 상이함) 
+# -> Ec2의 개수를 증감(최대 4대(설정)까지):Scaling -> 자동(Auto) 처리
+#############################################
+# 증감 등 
 resource "aws_autoscaling_group" "web" {
   name = "${local.project}-WEB-ASG"
   min_size         = 2
@@ -60,6 +66,7 @@ resource "aws_autoscaling_group" "was" {
     }
   }
 }
+# CPU 측정등
 resource "aws_autoscaling_policy" "web_cpu" {
   name                   = "${local.project}-WEB-CPU-50"
   autoscaling_group_name = aws_autoscaling_group.web.name
