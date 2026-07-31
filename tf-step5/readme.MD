@@ -71,6 +71,11 @@ RDS MySQL Multi-AZ (고가용성, db 용량이 부족 -> 자동증가 설정-> A
 └─ Standby
 ```
 
+- 용어정리
+    - Region : 서울 -> 서비스 지역
+        L Availability Zone(AZ) : 리전 내부에 독립된 데이터센터 영역 (서울내 4개 독릭영역(a,b,c,d))
+            L Subnet : 독립 가용영역 안에 생성하는 네트워크 (설정한 만큼 생성 가능)
+
 - 네트워크 구조 (2개의 가용 영역, 각각 서브넷 구성(퍼블릭 1개, 프라이빗 2개))
 ```
 ap-northeast-2a               ap-northeast-2c
