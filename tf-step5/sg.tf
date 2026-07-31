@@ -20,6 +20,9 @@ resource "aws_security_group" "public_alb" {
   }
   tags = { Name = "${local.project}-PUBLIC-ALB-SG" }
 }
+###############################################
+# WEB ASG 보안그룹
+###############################################
 resource "aws_security_group" "web" {
   name        = "${local.project}-WEB-SG"
   description = "Allow HTTP only from public ALB"
@@ -29,6 +32,7 @@ resource "aws_security_group" "web" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
+    # cidr x, 보안그룹 -> public ALB 보안그룹 지정
     security_groups = [aws_security_group.public_alb.id]
   }
   egress {
@@ -51,6 +55,7 @@ resource "aws_security_group" "internal_alb" {
     from_port       = 8000
     to_port         = 8000
     protocol        = "tcp"
+    # cidr x, 보안그룹 -> web 보안그룹 지정
     security_groups = [aws_security_group.web.id]
   }
   egress {
@@ -61,6 +66,9 @@ resource "aws_security_group" "internal_alb" {
   }
   tags = { Name = "${local.project}-INTERNAL-ALB-SG" }
 }
+###############################################
+# WAS ASG 보안그룹
+###############################################
 resource "aws_security_group" "was" {
   name        = "${local.project}-WAS-SG"
   description = "Allow application traffic only from internal ALB"
@@ -70,6 +78,7 @@ resource "aws_security_group" "was" {
     from_port       = 8000
     to_port         = 8000
     protocol        = "tcp"
+    # cidr x, 보안그룹 -> internal_alb 보안그룹 지정
     security_groups = [aws_security_group.internal_alb.id]
   }
   egress {
@@ -80,6 +89,9 @@ resource "aws_security_group" "was" {
   }
   tags = { Name = "${local.project}-WAS-SG" }
 }
+###############################################
+# RDS 보안그룹
+###############################################
 resource "aws_security_group" "rds" {
   name        = "${local.project}-RDS-SG"
   description = "Allow MySQL only from WAS tier"
@@ -89,6 +101,7 @@ resource "aws_security_group" "rds" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
+    # cidr x, 보안그룹 -> was 보안그룹 지정
     security_groups = [aws_security_group.was.id]
   }
   egress {
