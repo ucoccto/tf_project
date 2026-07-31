@@ -7,7 +7,7 @@ terraform {
     }
   }
 }
-provider "aws" {  
+provider "aws" {
   region = var.region
   # 기본태그 -> 리소스에 기본 반영됨
   default_tags {
