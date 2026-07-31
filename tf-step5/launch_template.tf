@@ -19,7 +19,7 @@ resource "aws_launch_template" "web" {
   }) )
   # 태그
   tag_specifications {
-    resource_type = "intance"
+    resource_type = "instance"
     tags = merge(local.common_tags, {
         Name = "${local.project}-WEB"
         Tier = "web"
@@ -44,13 +44,17 @@ resource "aws_launch_template" "was" {
   }  
   vpc_security_group_ids = [aws_security_group.was.id]  
   user_data = base64decode( templatefile("${path.module}/userdata-was.sh.tftpl", {    
-    internal_alb_dns = aws_lb.internal.dns_name
+    # rds 세팅값 설정
+    db_host = "교체예정"
+    db_port = "교체예정"
+    db_name = var.db_name
+    db_user = var.db_username
   }) )  
   tag_specifications {
-    resource_type = "intance"
+    resource_type = "instance"
     tags = merge(local.common_tags, {
-        Name = "${local.project}-WEB"
-        Tier = "web"
+        Name = "${local.project}-WAS"
+        Tier = "was"
     })
   }  
   lifecycle {
