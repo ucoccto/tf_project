@@ -3,7 +3,7 @@
 ###################################
 resource "aws_launch_template" "web" {
   name_prefix = "${local.project}-WEB-" # 증감이 수시로 발생해도 중복 x
-  image_id    = data.aws_ami.amazon_linux
+  image_id    = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
   # SSM 접속을 위해 프로파링 설정 -> iam.tf 구성
   iam_instance_profile {
@@ -35,3 +35,25 @@ resource "aws_launch_template" "web" {
 ###################################
 # was ec2용 -> launch template 요소(ASG 내에서 사용)를 사용하여 생성됨
 ###################################
+resource "aws_launch_template" "was" {
+  name_prefix = "${local.project}-WAS-"
+  image_id    = data.aws_ami.amazon_linux.id
+  instance_type = var.instance_type  
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2_ssm.name
+  }  
+  vpc_security_group_ids = [aws_security_group.was.id]  
+  user_data = base64decode( templatefile("${path.module}/userdata-was.sh.tftpl", {    
+    internal_alb_dns = aws_lb.internal.dns_name
+  }) )  
+  tag_specifications {
+    resource_type = "intance"
+    tags = merge(local.common_tags, {
+        Name = "${local.project}-WEB"
+        Tier = "web"
+    })
+  }  
+  lifecycle {
+    create_before_destroy = true
+  }
+}
