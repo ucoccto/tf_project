@@ -70,3 +70,20 @@ RDS MySQL Multi-AZ (고가용성, db 용량이 부족 -> 자동증가 설정-> A
 ├─ Primary
 └─ Standby
 ```
+
+- 네트워크 구조 (2개의 가용 영역, 각각 서브넷 구성(퍼블릭 1개, 프라이빗 2개))
+```
+ap-northeast-2a               ap-northeast-2c
+───────────────────────────────────────────────
+Public-A                       Public-C
+├─ Public ALB                  ├─ Public ALB
+└─ NAT Gateway-A               └─ NAT Gateway-C
+
+App-Private-A                  App-Private-C
+├─ WEB ASG                     ├─ WEB ASG
+├─ Internal ALB                ├─ Internal ALB
+└─ WAS ASG                     └─ WAS ASG
+
+DB-Private-A                   DB-Private-C
+└─ RDS Primary/Standby         └─ RDS Primary/Standby
+```
