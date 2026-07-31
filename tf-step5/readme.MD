@@ -145,3 +145,12 @@ rds_master_secret_arn = "arn:aws:secretsmanager:ap-northeast-2:827913617635:secr
 was_asg_name = "DE-AI-25-IaC-3tier-V1-WAS-ASG"
 web_asg_name = "DE-AI-25-IaC-3tier-V1-WEB-ASG"
 ```
+```
+- 요청후 응답 화면
+- 1회차 요청
+{"message":"3-Tier v2 response","hostname":"783c2a1d237c","db_host":"de-ai-25-mysql-v1.ct460c8gc44s.ap-northeast-2.rds.amazonaws.com","db_name":"appdb"}
+
+- 3회차 요청
+{"message":"3-Tier v2 response","hostname":"5fea1268bdd2","db_host":"de-ai-25-mysql-v1.ct460c8gc44s.ap-northeast-2.rds.amazonaws.com","db_name":"appdb"}
+
+```
