@@ -52,21 +52,21 @@ Prometheus -> Grafana -> Metrics -> Alert (슬랙등..)
 # 구성도
 - 트래픽 이동(api 요청, 웹페이지 요청, request)
 ```
-Internet
+Internet (외부망, 퍼블릭, 인터넷)
    │
-Public ALB
+Public ALB (EIP, 도메인, 퍼블릿 서브넷)
    │
-WEB Auto Scaling Group
-├─ WEB EC2 / AZ-a
-└─ WEB EC2 / AZ-c
+WEB Auto Scaling Group (ASG, 최소 2개 구성, 확장성 조건 명시, 최대 n개)
+├─ WEB EC2 / AZ-a (가용영역-a -> 서브넷 a존)
+└─ WEB EC2 / AZ-c (가용영역-c -> 서브넷 c존)
    │
-Internal ALB
+Internal ALB (프라이빗 서브넷, web<->was, 로드밸런싱)
    │
 WAS Auto Scaling Group
 ├─ WAS EC2 / AZ-a
 └─ WAS EC2 / AZ-c
    │
-RDS MySQL Multi-AZ
+RDS MySQL Multi-AZ (고가용성, db 용량이 부족 -> 자동증가 설정-> AWS RDS 자동 처리, 활성화 하면 적용)
 ├─ Primary
 └─ Standby
 ```
