@@ -45,8 +45,8 @@ resource "aws_launch_template" "was" {
   vpc_security_group_ids = [aws_security_group.was.id]
   user_data = base64decode(templatefile("${path.module}/userdata-was.sh.tftpl", {
     # rds 세팅값 설정
-    db_host = "교체예정"
-    db_port = "교체예정"
+    db_host = aws_db_instance.mysql.address
+    db_port = aws_db_instance.mysql.port
     db_name = var.db_name
     db_user = var.db_username
   }))
