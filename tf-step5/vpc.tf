@@ -115,4 +115,16 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.app[each.key].id
 }
 # Private Db Route Table/association
+# RDS 서비스 사용 -> 기존 EC2 기반 NAT 구성과 상이함
+resource "aws_route_table" "db" {
+  vpc_id = aws_vpc.main.id  
+  tags = {
+    Name = "${local.project}-DB-RT"
+  }
+}
+resource "aws_route_table_association" "private" {
+  for_each       = aws_subnet.db
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.db.id
+}
 
