@@ -1,3 +1,6 @@
+###############################################
+# 퍼블릭 ALB 보안 그룹, 80포트 인바운드, 모든IP/port 아웃바운드, SSM사용으로 인해 22 포트제외
+###############################################
 resource "aws_security_group" "public_alb" {
   name        = "${local.project}-PUBLIC-ALB-SG"
   description = "Allow internet HTTP traffic"
@@ -36,6 +39,9 @@ resource "aws_security_group" "web" {
   }
   tags = { Name = "${local.project}-WEB-SG" }
 }
+###############################################
+# Internal ALB : 인바운드 8000, 아웃바운드 상동
+###############################################
 resource "aws_security_group" "internal_alb" {
   name        = "${local.project}-INTERNAL-ALB-SG"
   description = "Allow WAS traffic only from WEB tier"

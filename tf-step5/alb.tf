@@ -1,13 +1,18 @@
+#################################
+# public ALB : Internet <-> ALB <-> WEB ASG
+#################################
 resource "aws_lb" "public" {
-  name               = "de-ai-25-public-alb"
+  name               = "${local.project}-public-alb"
   internal           = false
   load_balancer_type = "application"
+  # 보안그룹 - 퍼블릭 ALB
   security_groups    = [aws_security_group.public_alb.id]
+  # 퍼블릭 서브넷 2개 (가용영역별 a, c) 각각 id를 추출(리스트 컴프리핸션 방식 문법) 반영
   subnets            = [for subnet in aws_subnet.public : subnet.id]
   tags = { Name = "${local.project}-PUBLIC-ALB" }
 }
 resource "aws_lb_target_group" "web" {
-  name        = "de-ai-25-web-tg"
+  name        = "${local.project}-web-tg"
   port        = 80
   protocol    = "HTTP"
   target_type = "instance"
@@ -33,16 +38,21 @@ resource "aws_lb_listener" "public_http" {
     target_group_arn = aws_lb_target_group.web.arn
   }
 }
+
+#################################
+# internal ALB : WEB ASG <-> Internal ALB <-> WAS ASG
+#################################
 resource "aws_lb" "internal" {
-  name               = "de-ai-25-internal-alb"
+  name               = "${local.project}-internal-alb"
   internal           = true
   load_balancer_type = "application"
   security_groups    = [aws_security_group.internal_alb.id]
+  # APP 프라이빗 서브넷 2개 (가용영역별 a, c) 각각 id를 추출(리스트 컴프리핸션 방식 문법) 반영
   subnets            = [for subnet in aws_subnet.app : subnet.id]
   tags = { Name = "${local.project}-INTERNAL-ALB" }
 }
 resource "aws_lb_target_group" "was" {
-  name        = "de-ai-25-was-tg"
+  name        = "${local.project}-was-tg"
   port        = 8000
   protocol    = "HTTP"
   target_type = "instance"
