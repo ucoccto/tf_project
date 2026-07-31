@@ -95,7 +95,7 @@ DB-Private-A                   DB-Private-C
 
 # 파일구조
 tf-step5/
-L variables.tf : tf 전체에 사용한 값 정의 (상수같이 활용)
+L [*]variables.tf : tf 전체에 사용한 값 정의 (상수같이 활용)
 L locals.tf    : 신규, 반복용 값 세팅
 L iam.tf       : 신규, SSM 처리 역활, 프로파일 구성, 접속관련
 L provider.tf  : 공급자 정보, 리전, 공용 태그(전체 리소스 영향)
