@@ -6,7 +6,7 @@ locals {
   project = "DE-AI-25-IaC-3tier-V1"
   # 리소스에 적용된 공용 태그 -> 커스텀 구성 태그들을 리소스에 공통 배치하기 위함
   common_tags = {
-    Project     = locals.project
+    Project     = local.project
     Environment = var.environment
     ManageBy    = "Terraform"
   }
