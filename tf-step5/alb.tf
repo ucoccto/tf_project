@@ -31,6 +31,8 @@ resource "aws_lb_target_group" "web" {
   }
   tags = { Name = "${local.project}-WEB-TG" }
 }
+# ALB가 80포트로 받은 HTTP 요청을 web target_group으로 전달하도록 설정(리슨)
+# 아래 구성을 통해서 헬스 체크가 작동됨
 resource "aws_lb_listener" "public_http" {
   load_balancer_arn = aws_lb.public.arn
   port              = 80
@@ -72,6 +74,7 @@ resource "aws_lb_target_group" "was" {
   }
   tags = { Name = "${local.project}-WAS-TG" }
 }
+# 포트제외, 대상제외 구성 모두 동일함
 resource "aws_lb_listener" "internal_http" {
   load_balancer_arn = aws_lb.internal.arn
   port              = 8000
