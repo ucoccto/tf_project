@@ -15,6 +15,46 @@ resource "aws_eks_cluster" "main" {
 
     # Auto Mode(자동 직접 관리) 이므로 컨트롤 플레인에 필요한 기능등 별도로 addon 하지 않음
     bootstrap_self_managed_addons = false
+
+    # EKS 접근 권한 관리 방식
+    access_config {
+      
+    }
+
+    # EKS Auto Mode Compute 설정
+    compute_config {
+      
+    }
+
+    # 쿠버네티스 네트워크 설정
+    kubernetes_network_config {
+      
+    }
+
+    # 쿠버네티스 영구 스토리지 설정
+    storage_config {
+      
+    }
+
+    # EKS가 사용하는 VPC, API endpoing  설정
+    vpc_config {
+      
+    }
+
+    # 컨트롤 플레인의 로그
+    enabled_cluster_log_types = [
+
+    ]
+
+    # 태그
+    tags = {
+      Name = local.cluster_name
+    }
+
+    # 의존성
+    depends_on = [ 
+
+    ]
 }
 
 
