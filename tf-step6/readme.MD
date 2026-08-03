@@ -155,7 +155,7 @@ aws 콘솔 > vpc > 리소스맵 > 네트워크 구성 확인
 ```
 - 삭제시 해당 role이 삭제 않되면 => 자동화 구성시 오류 발생함(중복 역활 생성)
 ```
-7. `07_logging.tf` — EKS Control Plane CloudWatch Log Group
+7. [v]`07_logging.tf` — EKS Control Plane CloudWatch Log Group
 
 8. `08_eks.tf` — EKS Control Plane, Auto Mode, Metrics Server, Access Entry
 9. `09_security.tf` — EKS Cluster Security Group에서 RDS 3306 접근 허용
