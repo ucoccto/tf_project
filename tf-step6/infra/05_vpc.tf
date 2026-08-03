@@ -1,4 +1,7 @@
 # 전체 EKS/RDS 서비스가 들어갈 네트워크 구성
+# ────────────────────────────────────────────────
+# VPC
+# ────────────────────────────────────────────────
 resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -8,6 +11,9 @@ resource "aws_vpc" "main" {
   }
 }
 
+# ────────────────────────────────────────────────
+# IGW
+# ────────────────────────────────────────────────
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
@@ -16,6 +22,9 @@ resource "aws_internet_gateway" "main" {
   }
 }
 
+# ────────────────────────────────────────────────
+# Subnet
+# ────────────────────────────────────────────────
 # Public Subnets - Public ALB, NAT Gateway 배치
 resource "aws_subnet" "public" {
   for_each   = local.public_subnets # 동적으로 구성된 az별 가용영역명, cidr값
@@ -37,7 +46,6 @@ resource "aws_subnet" "public" {
     "kubernetes.io/role/elb" = "1"
   }
 }
-
 # Private Application Subnets - EKS Auto Mode의 Node/pod등 배치
 # 쿠버네티스가 해당 서브넷을 `내부 적용 ALB`등을 만들때 해당 서브넷사용하도록 하는 태그 표식 추가
 resource "aws_subnet" "app" {
@@ -67,6 +75,9 @@ resource "aws_subnet" "db" {
   }
 }
 
+# ────────────────────────────────────────────────
+# NAT Gateway
+# ────────────────────────────────────────────────
 # AZ별 Nat Gateway에 연결할 고정 공인 - eip
 resource "aws_eip" "nat" {
     # IP는 가용영역별 각각 1개씩 총 2개 준비
@@ -96,58 +107,67 @@ resource "aws_nat_gateway" "main" {
   ]
 }
 
+# ────────────────────────────────────────────────
+# Route Table/association 
+# ────────────────────────────────────────────────
+# Public Route Table/association 
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
 
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
 
+  tags = {
+    Name = "${local.cluster_name}-public-rt"
+  }
+}
+resource "aws_route_table_association" "public" {
+  for_each       = aws_subnet.public
 
-# Private App Route Table/association
+  subnet_id      = each.value.id # a 존의 서브넷, c 존의 서브넷 -> 반복 구성 연결
+  route_table_id = aws_route_table.public.id
+}
+
+# App(web, was => pod/node/namespace등) subnet의 Route Table/association
 resource "aws_route_table" "app" {
-  for_each = local.azs
+  for_each = aws_subnet.app
+
   vpc_id   = aws_vpc.main.id
+
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_nat_gateway.main[each.key].id
   }
+
   tags = {
-    Name = "${local.project}-APP-RT"
+    Name = "${local.cluster_name}-app-rt-${each.key}"
   }
 }
 resource "aws_route_table_association" "app" {
   for_each       = aws_subnet.app
+
   subnet_id      = each.value.id
   route_table_id = aws_route_table.app[each.key].id
 }
 
-
-
 # Private Db Route Table/association
 # RDS 서비스 사용 -> 기존 EC2 기반 NAT 구성과 상이함
 resource "aws_route_table" "db" {
+  for_each = aws_subnet.db
+
   vpc_id = aws_vpc.main.id
+
   tags = {
-    Name = "${local.project}-DB-RT"
+    Name = "${local.cluster_name}-db-rt-${each.key}"
   }
 }
 resource "aws_route_table_association" "db" {
   for_each       = aws_subnet.db
+  
   subnet_id      = each.value.id
   route_table_id = aws_route_table.db.id
 }
 
 
-
-# Public Route Table/association 
-resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.main.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.main.id
-  }
-  tags = {
-    Name = "${local.project}-PUBLIC-RT"
-  }
-}
-resource "aws_route_table_association" "public" {
-  for_each       = aws_subnet.public
-  subnet_id      = each.value.id # a 존의 서브넷, c 존의 서브넷 -> 반복 구성 연결
-  route_table_id = aws_route_table.public.id
-}
