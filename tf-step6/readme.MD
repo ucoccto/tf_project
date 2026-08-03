@@ -122,3 +122,18 @@
 
         - 서비스 확장 대응:	
             - WEB·WAS 외에 배치, 데이터 처리(데이터 엔진니어 요소, airflow), 모니터링(프로메테우스, 그라파타) 등 서비스가 늘어도 동일한 방식으로 관리
+
+# 구조 설계
+## ~/infra 내 테라폼 파일
+1. `01_versions.tf` — Terraform/AWS Provider 버전
+2. `02_variables.tf` — 외부 입력값
+3. `03_locals.tf` — 입력값을 조합한 공통 이름·서브넷 Map·태그
+4. `04_provider.tf` — AWS 리전과 공통 태그
+5. `05_vpc.tf` — VPC, 6개 Subnet, IGW, NAT Gateway, Route Table
+6. `06_iam.tf` — EKS Cluster Role과 Auto Mode Node Role
+7. `07_logging.tf` — EKS Control Plane CloudWatch Log Group
+8. `08_eks.tf` — EKS Control Plane, Auto Mode, Metrics Server, Access Entry
+9. `09_security.tf` — EKS Cluster Security Group에서 RDS 3306 접근 허용
+10. `10_ecr.tf` — WEB/WAS 이미지 저장소와 이미지 정리 정책
+11. `11_rds.tf` — 비공개 MySQL Multi-AZ 및 Secrets Manager 암호
+12. `12_outputs.tf` — 배포 스크립트가 사용할 생성 결과
