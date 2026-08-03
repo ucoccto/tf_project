@@ -78,3 +78,27 @@
 | 기타 구성 | |  |
 | Container Image | Amazon ECR                | WEB/WAS 이미지 저장       |
 | Database        | Amazon RDS                | MySQL 데이터 저장         |
+
+# Terraform Kubernetes/EKS Auto Mode 구성
+## 비교
+- V1(금) : ALB, ASG, EC2, RDS등 활용하여 AWS 고가용성 인프라 구성, EC2 서버를 효율적 운영
+- V2(월) : 쿠버네티스 기반
+    - 컨테이너 기반 어플리케이션의 배포/복구/확장의 자동화, 오케스트레이션
+    - 버전
+        - 직접 세밀하기 구성
+            - EKS의 내부 운영 구조까지 모두 설계( 컨트로 페인 파트 직접 구성 )
+        - Pod 하위 단위 인프라에 집중 구성
+            - EKS Auto Mode 구성
+                - 쿠버네티스 사용하는데 운영(컨트롤 페인 파트 Auto mode 전담, 구성 관여 x, 정보 제공 가능)
+                - 쿠버네티스 핵심 집중( Pod, Deployment, Service, Ingress, HPA, PDB )
+                    - 데이터 페인에 집중
+    - 장점
+        - 배포 표준화	        WEB와 WAS를 Docker 이미지로 만들고, 동일한 이미지를 개발·테스트·운영 환경에 배포
+        - 자동 장애 복구	      Pod가 종료되면 Deployment가 새로운 Pod를 자동 생성
+        - 빠른 확장	           HPA가 트래픽과 자원 사용량에 따라 Pod 개수를 조절
+        - 서비스 연결 단순화	    WEB이 변경되는 WAS Pod IP 대신 was-service라는 고정 이름으로 접근
+        - 무중단 업데이트	   기존 Pod를 한꺼번에 종료하지 않고 새 버전으로 순차 교체
+        - 고가용성	        Pod를 여러 Node와 가용영역에 분산 (Multi-AZ)
+        - 선언형 관리	     서버에 접속해 직접 수정하지 않고 YAML과 Terraform으로 원하는 상태를 정의
+        - CI/CD 연계	   GitHub Actions, ECR, ArgoCD와 연결해 이미지 빌드부터 배포까지 자동화
+        - 서비스 확장 대응	WEB·WAS 외에 배치, 데이터 처리, 모니터링 등 서비스가 늘어도 동일한 방식으로 관리
