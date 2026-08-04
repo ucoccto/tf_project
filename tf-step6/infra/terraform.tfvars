@@ -1,3 +1,4 @@
+# 우선순위로 여기에 기재된 값이 변수값으로 설정됨
 aws_region   = "ap-northeast-2"
 project_name = "de-ai-25-eks-auto"
 environment  = "dev"
