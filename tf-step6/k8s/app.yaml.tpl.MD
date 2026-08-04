@@ -39,7 +39,11 @@ metadata:
 # Was POD에 관련된 Deployment, Service, PDB, HPA
 # ─────────────────────────────────────────────
 # ─────────────────────────────────────────────
-# Deployment (Pod 개수,복구,버전에따른 교체등 관리 총괄 -> 정책 구성 -> 클러스터-네임스페이스내에 System POD로 구성되어서 관리 업무 수행함)
+# Deployment (Pod 개수,복구,버전에따른 교체등 관리 총괄 -> 정책 구성 )
+# 쿠버네티스가 가동되면 시스템 구성, 데이터베이스, 리소스 객체등이 생성 세팅됨
+# Control Plane : Kubernetes 관리 시스템
+# etcd          : Kubernetes 내에 각각 업무를 수행하는 객체들을 저장하는 데이터베이스
+# Deployment    : etcd에 저장되어 있는 Kubernetes API 리소스 객체로 Pod 관리 업무 수행
 # ─────────────────────────────────────────────
 apiVersion: apps/v1
 kind: Deployment
