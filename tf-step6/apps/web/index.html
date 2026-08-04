@@ -12,26 +12,27 @@
   </style>
 </head>
 <body>
-  <h1>Terraform → Amazon EKS Auto Mode v3</h1>
+  <h1>Terraform → Amazon EKS Auto Mode v1</h1>
   <p>Public ALB → WEB Pod → WAS Pod → RDS MySQL Multi-AZ</p>
 
   <div class="card">
-    <h2>WAS 정보</h2>
+    <h2>WAS 정보 (web<->was)</h2>
     <pre id="info">조회 중...</pre>
   </div>
 
   <div class="card">
-    <h2>RDS 연결 테스트</h2>
+    <h2>RDS 연결 테스트 (web<->was<->db)</h2>
     <button onclick="loadDb()">RDS 요청 실행</button>
     <pre id="db">버튼을 누르세요.</pre>
   </div>
 
   <script>
     async function readJson(url) {
-      const response = await fetch(url);
-      const body = await response.json();
+      // 통신 -> 통신결과 파싱 -> js 객체로 반환
+      const response = await fetch(url);  // 서버에 요청
+      const body = await response.json(); // 역직렬화 -> JS 객체 구성(파이썬의 dict동일)
       if (!response.ok) throw new Error(JSON.stringify(body));
-      return body;
+      return body; // 반환
     }
 
     async function loadInfo() {
