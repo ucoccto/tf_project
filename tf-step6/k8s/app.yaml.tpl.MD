@@ -69,35 +69,36 @@ spec:                             # Deployment의 실제 설정
           labelSelector:          # 분산 규칙을 따르는 파드는 -
             matchLabels:          # 라벨이 일치하는 파드만 적용
               app: was            # app=was 로 구성된 파드만 적용
-      containers:
-        - name: was
-          image: ${WAS_IMAGE}
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 8000
-          envFrom:
-            - secretRef:
-                name: rds-secret
-          resources:
-            requests:
-              cpu: 100m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 512Mi
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: http
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 3
-            failureThreshold: 3
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: http
+
+      containers:                 # 파드 내부 컨테이너 설정
+        - name: was               # 컨테이너 명
+          image: ${WAS_IMAGE}     # 이미지 주소 (ECR 존재) -> 인프라구성->이미지 push후 전달받아서 세팅
+          imagePullPolicy: Always # 파드 시작시 저장소에 이미지가 존재여부 체크(확인)
+          ports:                  # 컨테이너 사용 포트
+            - name: http          # 포트명
+              containerPort: 8000 # 8000번-> fastapi 사용 포트
+          envFrom:                # 외부로부터 환경변수를 받아서 설정
+            - secretRef:          # 쿠버네티스 secret 참조
+                name: rds-secret  # RDS 접속 정보 저장되어 있음 > 이름 적용
+          resources:              # 컨테이너 구성시 node/pod로 부터 받은 자원
+            requests:             # 최소 자원
+              cpu: 100m           # cpu 0.1개
+              memory: 128Mi       # 메모리 128Mi
+            limits:               # 제한 (최대치) 
+              cpu: 500m           # cpu 0.5개
+              memory: 512Mi       # 메모리 512Mi
+          readinessProbe:         # 요청을 받은 준비가 되었는가 검사
+            httpGet:              # http 요청 상태 확인 (get 방식)
+              path: /health       # url, api 경로
+              port: http          # http라는 이름으로 규정된 8000번 포트 사용
+            initialDelaySeconds: 5 # 컨테이너 시작후 5초후 첫 검사 진행
+            periodSeconds: 10      # 10초 간격 검사
+            timeoutSeconds: 3      # 3초 안에 응답 없으면 실패
+            failureThreshold: 3    # 연속 3회 실패하면 요청 대상에서 제외 -> 비정상판단
+          livenessProbe:          # 컨테이너가 정상적인가 검사
+            httpGet:              # http 요청 상태 확인 (get 방식)
+              path: /health       # url, api 경로
+              port: http          # http라는 이름으로 규정된 8000번 포트 사용
             initialDelaySeconds: 15
             periodSeconds: 20
             timeoutSeconds: 3
