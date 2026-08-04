@@ -24,10 +24,21 @@ resource "aws_ecr_repository" "web" {
   }
 }
 
-
 # ────────────────────────────────────────────────
 # WAS ECR 저장소
 # ────────────────────────────────────────────────
 resource "aws_ecr_repository" "was" {
   name = "${local.cluster_name}/was"
+  
+  image_tag_mutability = "MUTABLE"
+  
+  force_delete = true
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = { 
+    Name = "${local.cluster_name}-ecr-was-repo" 
+  }
 }
