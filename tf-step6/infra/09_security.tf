@@ -3,14 +3,14 @@
 # ────────────────────────────────────────────────
 resource "aws_security_group" "rds" {
   # 보안 그룹 이름
-  name        = "${local.cluster_name}-rds-sg"
-  
+  name = "${local.cluster_name}-rds-sg"
+
   # eks 클러스터에서만 rds에 접근 가능
   description = "Mysql access only from eks cluster sg"
 
   # vpc
-  vpc_id      = aws_vpc.main.id
-  
+  vpc_id = aws_vpc.main.id
+
   # 인바운드
   ingress {
     description = "MySQL from EKS Auto Mode Node and WAS Pods"
