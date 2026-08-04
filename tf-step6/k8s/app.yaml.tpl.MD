@@ -45,22 +45,22 @@ metadata:
 # etcd          : Kubernetes 내에 각각 업무를 수행하는 객체들을 저장하는 데이터베이스
 # Deployment    : etcd에 저장되어 있는 Kubernetes API 리소스 객체로 Pod 관리 업무 수행
 # ─────────────────────────────────────────────
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: was
-  namespace: ${APP_NAMESPACE}
-spec:
-  replicas: 2                 # was 파드는 기본 최소 2개를 실행(운영)
-  selector:
-    matchLabels:
-      app: was
-  template:
-    metadata:
-      labels:
-        app: was
-        tier: backend
-    spec:
+apiVersion: apps/v1               # Deployment 기능을 제공하는 api 버전 (고정값, 버전차이 추후 존재)
+kind: Deployment                  # 파드의 생성, 복구, 개수 유지 담당
+metadata:                         # Deployment 기본 정보
+  name: was                       # Deployment 이름
+  namespace: ${APP_NAMESPACE}     # Deployment 리소스 객체가 생성되는 네임스페이스
+spec:                             # Deployment의 실제 설정
+  replicas: 2                     # was 파드는 기본 최소 2개를 실행(운영) -> 설정
+  selector:                       # pod 선택 조건
+    matchLabels:                  # label을 기준으로 파드 선택 -> 파드 web, was
+      app: was                    # app=was 라는 형태로 label을 가진 파드를 관리
+  template:                       # Deployment가 관리하는 파드의 설계도
+    metadata:                     # 기본정보
+      labels:                     # 라벨
+        app: was                  # app=was, Deployment 파드 생성시 파드 찾는 조건
+        tier: backend             # backend 담당이라는 커스텀 라벨
+    spec:                         # 실제 실행 정보
       topologySpreadConstraints:
         - maxSkew: 1
           minDomains: 2
