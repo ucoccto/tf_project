@@ -139,29 +139,32 @@ spec:
       app: was                  # 라벨값중 app=was인 파드에 대한 정책
 ---
 
+# ─────────────────────────────────────────────
 # HorizontalPodAutoscaler (HPA)
+# CPU 사용량(판단기준)에 따라 WAS 파드의 수를 자동 조절(Autoscaler) <-> ASG
+# ─────────────────────────────────────────────
 apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
+kind: HorizontalPodAutoscaler     # 파드의 수를 자동 조절(확대, 축소)
 metadata:
-  name: was-hpa
-  namespace: ${APP_NAMESPACE}
-spec:
-  scaleTargetRef:
+  name: was-hpa                   # HPA의 이름
+  namespace: ${APP_NAMESPACE}     # 네임스페이스 소속 (이 공간내에서 생성)
+spec:                             # 실제 설정
+  scaleTargetRef:                 # scale할 대상 참조
     apiVersion: apps/v1
-    kind: Deployment
-    name: was
-  minReplicas: 2
-  maxReplicas: 6
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 300
-  metrics:
-    - type: Resource
+    kind: Deployment              # scale 대상은 Deployment
+    name: was                     # was 파드만 담당
+  minReplicas: 2                  # 최소 was 파드수 2
+  maxReplicas: 6                  # 최대 was 파드수 6
+  behavior:                               # 파드 확장, 축소 동작 설정
+    scaleDown:                            # 축소(파드수 줄일때)
+      stabilizationWindowSeconds: 300     # 부하 감소후 300초간 관찰한 후에 축소
+  metrics:                        # 판단 지표
+    - type: Resource              # CPU, 메모리 리소스 지표 사용
       resource:
-        name: cpu
+        name: cpu                 # CPU 사용량 대상
         target:
-          type: Utilization
-          averageUtilization: 60
+          type: Utilization       # requests.cpu 대비 cpu 사용율 기준
+          averageUtilization: 60  # 전체 was 파드의 평균 cpu 목표를 60% 설정
 ---
 
 # ─────────────────────────────────────────────
@@ -277,6 +280,8 @@ spec:
           type: Utilization
           averageUtilization: 60
 ---
+
+# Ingress
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
