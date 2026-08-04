@@ -171,6 +171,10 @@ aws 콘솔 > vpc > 리소스맵 > 네트워크 구성 확인
         - Ingress -> Web Service -> Web Pod -> WAS Service -> Web Pod 확인됨
         - Ingress -> Web Service -> Web Pod -> WAS Service -> Web Pod -> RDS 확인
     - nginx.conf : 프록시 구성 환경설정 파일 (web->was, 기타설정)
+        - was에 대해 upstream 구성으로 정의, 8000번 포트등 설정
+        - /health : 즉시 응답 구성 ( web pod가 잘 작동 하고 있음을 보여주는 응답 )
+        - /api/   : was pod 방향으로 포워딩
+        - /       : index.html 응답
 - was
     - app.py : fastapi 작성된 백엔드 코드
     - Dockerfile : 이미지 생성용 도커파일
