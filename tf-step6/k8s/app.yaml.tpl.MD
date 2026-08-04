@@ -38,14 +38,16 @@ metadata:
 # ─────────────────────────────────────────────
 # Was POD에 관련된 Deployment, Service, PDB, HPA
 # ─────────────────────────────────────────────
-# Deployment
+# ─────────────────────────────────────────────
+# Deployment (Pod 개수,복구,버전에따른 교체등 관리 총괄 -> 정책 구성 -> 클러스터-네임스페이스내에 System POD로 구성되어서 관리 업무 수행함)
+# ─────────────────────────────────────────────
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: was
   namespace: ${APP_NAMESPACE}
 spec:
-  replicas: 2
+  replicas: 2                 # was 파드는 기본 최소 2개를 실행(운영)
   selector:
     matchLabels:
       app: was
