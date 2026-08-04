@@ -207,6 +207,24 @@ aws 콘솔 > vpc > 리소스맵 > 네트워크 구성 확인
             public-alb   alb     *       k8s-deai25-publical-6c4d0098f7-1532792584.ap-northeast-2.elb.amazonaws.com 80 14m
             ```
         - http://k8s-deai25-publical-6c4d0098f7-1532792584.ap-northeast-2.elb.amazonaws.com
+    
     - EKS에 접속(본인 리전)
         - 클러스터 확인 > 상세 정보 > 각종 정보 확인 가능
-        - node(ec2)는 ec2 대시보드에서 보이지 x
+            - 대시보드상 각종 메뉴에 리소스 확인
+        - ec2 확인
+            - node(ec2)는 ec2 대시보드에서 보이지 x
+        - rds 확인
+        - ecr 확인
+        - vpc 확인
+        - Secrets Manager 확인
+        - 
+
+# 해제
+- 윈도우
+    ```
+        ./destroy-all.bat
+    ```
+- 맥
+    ```
+        ./destroy-all.sh
+    ```
