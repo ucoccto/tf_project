@@ -30,7 +30,7 @@ resource "aws_eks_cluster" "main" {
 
     # 노드 구성 => 노드풀에서 가져와서 구성
     node_pools = [
-      "gerneral-purpose", # web, was등 pod 실행하는 용도의 node
+      "general-purpose", # web, was등 pod 실행하는 용도의 node
       "system"            # 중요 시스템 pod용
     ]
 
