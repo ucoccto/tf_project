@@ -61,14 +61,14 @@ spec:                             # Deployment의 실제 설정
         app: was                  # app=was, Deployment 파드 생성시 파드 찾는 조건
         tier: backend             # backend 담당이라는 커스텀 라벨
     spec:                         # 실제 실행 정보
-      topologySpreadConstraints:
-        - maxSkew: 1
-          minDomains: 2
-          topologyKey: topology.kubernetes.io/zone
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app: was
+      topologySpreadConstraints:  # 파드를 여러 가용 영역에 분산 배치
+        - maxSkew: 1              # AZ별 파드 개수 차이는 최대 1개로 제한
+          minDomains: 2           # 최소 2개, 가용 영역에 분산
+          topologyKey: topology.kubernetes.io/zone   # 분산 기준(가용영역)을 AZ로 지정
+          whenUnsatisfiable: DoNotSchedule           # 분산 조건을 만족하지 않으면 배치x
+          labelSelector:          # 분산 규칙을 따르는 파드는 -
+            matchLabels:          # 라벨이 일치하는 파드만 적용
+              app: was            # app=was 로 구성된 파드만 적용
       containers:
         - name: was
           image: ${WAS_IMAGE}
