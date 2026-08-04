@@ -14,13 +14,14 @@ resource "aws_db_subnet_group" "main" {
 # 비밀번호를 코드에 저장하지 않고 AWS Secrets Manager가 관리
 # ────────────────────────────────────────────────
 resource "aws_db_instance" "mysql" {
-  identifier = "de-ai-25-mysql-v1"
+  identifier = "${local.cluster_name}-mysql"
 
   engine         = "mysql"
+  engine_version = "8.0"
   instance_class = var.db_instance_class
 
   # 기본 저장 공간 20GB
-  allocated_storage = 20
+  allocated_storage = var.db_allocated_storage
   # 최대 100GB 증가 가능 -> 필요에 따라 증가만됨
   max_allocated_storage = 100
   # 범용 스토리지 
@@ -59,5 +60,5 @@ resource "aws_db_instance" "mysql" {
   # rds 변경 사항 => 즉시 반영(유지보수 -> aws)
   apply_immediately = true
 
-  tags = { Name = "${local.project}-MYSQL" }
+  tags = { Name = "${local.cluster_name}-mysql" }
 }
