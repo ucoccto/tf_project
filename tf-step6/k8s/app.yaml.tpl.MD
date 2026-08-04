@@ -45,7 +45,9 @@ metadata:
 # etcd          : Kubernetes 내에 각각 업무를 수행하는 객체들을 저장하는 데이터베이스
 # Deployment    : etcd에 저장되어 있는 Kubernetes API 리소스 객체로 Pod 관리 업무 수행
 # ─────────────────────────────────────────────
-apiVersion: apps/v1               # Deployment 기능을 제공하는 api 버전 (고정값, 버전차이 추후 존재)
+
+apiVersion: apps/v1               # Deployment 기능을 제공하는 api 버전 
+                                  # (고정값, 버전차이 추후 존재)
 kind: Deployment                  # 파드의 생성, 복구, 개수 유지 담당
 metadata:                         # Deployment 기본 정보
   name: was                       # Deployment 이름
@@ -121,17 +123,20 @@ spec:
   type: ClusterIP
 ---
 
+# ─────────────────────────────────────────────
 # PodDisruptionBudget (PDB)
-apiVersion: policy/v1
-kind: PodDisruptionBudget
+# 계획된 작업중 was 파드가 모두 중단되는 상황 방지하는 관리 담당
+# ─────────────────────────────────────────────
+apiVersion: policy/v1         
+kind: PodDisruptionBudget       # 파드 중단 허용 범위 정의, 관리
 metadata:
-  name: was-pdb
-  namespace: ${APP_NAMESPACE}
+  name: was-pdb                 # PDB 이름
+  namespace: ${APP_NAMESPACE}   # 소속한 네임스페이스
 spec:
-  minAvailable: 1
-  selector:
+  minAvailable: 1               # WAS 파드는 최소 1개 이상 유지
+  selector:                     # 누구를 보호할것인가? 대상 특정
     matchLabels:
-      app: was
+      app: was                  # 라벨값중 app=was인 파드에 대한 정책
 ---
 
 # HorizontalPodAutoscaler (HPA)
@@ -162,7 +167,7 @@ spec:
 # ─────────────────────────────────────────────
 # Web POD에 관련된 Deployment, Service, PDB, HPA
 # ─────────────────────────────────────────────
-# Deployment
+# Deployment (상동, 세부값만 일부 상이함)
 apiVersion: apps/v1
 kind: Deployment
 metadata:
