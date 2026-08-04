@@ -107,20 +107,24 @@ spec:                             # Deployment의 실제 설정
             failureThreshold: 3
 ---
 
+# ─────────────────────────────────────────────
 # Service
+# Web 파드가 Was의 파드에 접근할 수 있는 내부 주소 제공(중간 역활)
+# 거쳐서 이동
+# ─────────────────────────────────────────────
 apiVersion: v1
-kind: Service
-metadata:
-  name: was-service
-  namespace: ${APP_NAMESPACE}
+kind: Service                   # 여러 was 파드에 고정된(단일) 접근 주소 제공
+metadata:                       # 기본 정보
+  name: was-service             # 이름
+  namespace: ${APP_NAMESPACE}   # 생성 위치
 spec:
-  selector:
-    app: was
-  ports:
-    - name: http
-      port: 8000
-      targetPort: http
-  type: ClusterIP
+  selector:                     # 요청을 전달할 파드 선택 조건
+    app: was                    # app=was 라벨을 가진 파드만 대상
+  ports:                        # 포트    
+    - name: http                # 포트 이름
+      port: 8000                # 포트 번호 
+      targetPort: http          # 타겟 파드(WAS POD)의 포트명 -> http
+  type: ClusterIP               # 클러스터 내부에서만 접근 가능한 Service
 ---
 
 # ─────────────────────────────────────────────
