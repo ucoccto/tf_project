@@ -1,28 +1,32 @@
 # ─────────────────────────────────────────────
-# Ingress
+# IngressClassParams
+# EKS ALB의 기본 옵션 설정
 # ─────────────────────────────────────────────
 # IngressClassParams
 apiVersion: eks.amazonaws.com/v1
-kind: IngressClassParams
+kind: IngressClassParams            # ALB 생성 옵션 정의 리소스
 metadata:
   name: alb
 spec:
-  scheme: internet-facing
+  scheme: internet-facing           # 외부 인터넷에서 접속 가능한 Puvlic ALB 생성
 ---
 
+# ─────────────────────────────────────────────
 # IngressClass
+# Ingress를 AWS ALB와 연결하는 클레스 설정
+# ─────────────────────────────────────────────
 apiVersion: networking.k8s.io/v1
-kind: IngressClass
+kind: IngressClass                      # ingress 처리할 컨트롤러 정의
 metadata:
-  name: alb
+  name: alb                             # 이름, ingress 파트에서 사용
   annotations:
-    ingressclass.kubernetes.io/is-default-class: "true"
+    ingressclass.kubernetes.io/is-default-class: "true" # alb를 기본 ingressclass로 지정
 spec:
-  controller: eks.amazonaws.com/alb
-  parameters:
-    apiGroup: eks.amazonaws.com
-    kind: IngressClassParams
-    name: alb
+  controller: eks.amazonaws.com/alb     # AWS EKS의 ALB 컨트롤러가 Ingress 담당
+  parameters:                           # 리소스 상세정보 연결
+    apiGroup: eks.amazonaws.com         # 리소스 eks api 그룹
+    kind: IngressClassParams            # 리소스 종류
+    name: alb                           # 리소스 이름
 ---
 
 # ─────────────────────────────────────────────
@@ -285,21 +289,24 @@ spec:
           averageUtilization: 60
 ---
 
+# ─────────────────────────────────────────────
 # Ingress
+# 외부에서 들어온 요청을 public alb를 통해 Web Service에게 전달
+# ─────────────────────────────────────────────
 apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: Ingress                       # 외부 요청의 진입 경로와 전달 규칙 정의
 metadata:
-  name: public-alb
-  namespace: ${APP_NAMESPACE}
+  name: public-alb                  # 이름
+  namespace: ${APP_NAMESPACE}       # 생성 위치
 spec:
-  ingressClassName: alb
-  rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: web-service
+  ingressClassName: alb             # alb 관련 내용
+  rules:                            # 룰
+    - http:                         # http 요청 처리
+        paths:                      # 경로들
+          - path: /                 # 루트 경로
+            pathType: Prefix        # /로 시작하는 모든 하위 경로 포함
+            backend:                # 요청을 전달할 백엔드 설정
+              service:              # 서비스 지정
+                name: web-service   # web-service 에게 전달
                 port:
-                  number: 80
+                  number: 80        # 80포트로 전달
