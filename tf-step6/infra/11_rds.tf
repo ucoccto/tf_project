@@ -2,7 +2,7 @@
 # RDS Subnet Group - 서로 다른 AZ의 DB 서브넷 사용
 # ────────────────────────────────────────────────
 resource "aws_db_subnet_group" "main" {
-  name = "${local.cluster_name}-db-subnet-group"  
+  name       = "${local.cluster_name}-db-subnet-group"
   subnet_ids = values(aws_subnet.db)[*].id
 
   tags = { Name = "${local.cluster_name}-db-subnet-group" }
