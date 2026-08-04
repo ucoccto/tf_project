@@ -65,7 +65,26 @@ resource "aws_ecr_lifecycle_policy" "main" {
   # 정책 구성 => 현재 작성은 HCL 문법으로 작성 -> ERC의 요구사항 JSON 형태로 변환 구성
   policy = jsonencode({
     rules = [
-      
+      {
+        # lifecycle 규칙 실행 우선순위
+        rulePriority = 1
+        # 설명
+        description = "최신 이미지 10개만 유지"
+        # 선택
+        selection = {
+          # 태그 존재여부 상관없다. 모든 이미지 대상
+          tagStatus = "any"
+          # 기준
+          countNumber = 10
+          # 저장된 이미지 개수가 기준을 초과하면 오래된 이미지를 제외->최신순
+          countType = "imageCountMoreThan"
+        }
+        # 액선
+        action = {
+          # 오래된 이미지 만료시켜서 삭제
+          type = "expire"
+        }
+      }
     ]
   })
 }
