@@ -42,3 +42,30 @@ resource "aws_ecr_repository" "was" {
     Name = "${local.cluster_name}-ecr-was-repo" 
   }
 }
+
+# ────────────────────────────────────────────────
+# ECR 저장소관련 Lifecycle Policy
+# ────────────────────────────────────────────────
+# 1. 위에서 생성한 저장소 한 묶음 구성
+locals {
+  ecr_repositories = {
+    web = aws_ecr_repository.web.name
+    was = aws_ecr_repository.was.name
+  }
+}
+# 2. 정책 : 태그와 상관없이 최근 push된 이미지 10개만 유지,
+#          오래된 이미지는 만료(CI/CD 적용이후 확인) -> 회사 상황에 따라 정책 다를 수 있음
+resource "aws_ecr_lifecycle_policy" "main" {
+  # 반복 데이터 (저장소 이름) 설정
+  for_each = local.ecr_repositories
+
+  # 정책의 영향을 받은 저장소 이름 지정
+  repository = each.value
+
+  # 정책 구성 => 현재 작성은 HCL 문법으로 작성 -> ERC의 요구사항 JSON 형태로 변환 구성
+  policy = jsonencode({
+    rules = [
+      
+    ]
+  })
+}
